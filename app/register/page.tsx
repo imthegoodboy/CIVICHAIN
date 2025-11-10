@@ -15,14 +15,8 @@ export default function RegisterPage() {
   const [paymentCoin, setPaymentCoin] = useState('ETH');
   const [quote, setQuote] = useState<any>(null);
 
-  useEffect(() => {
-    if (address) {
-      checkRegistration();
-      fetchQuote();
-    }
-  }, [address]);
-
   const checkRegistration = async () => {
+    if (!address) return;
     try {
       const res = await fetch(`/api/users/register?walletAddress=${address}`);
       const data = await res.json();
@@ -35,6 +29,7 @@ export default function RegisterPage() {
   };
 
   const fetchQuote = async () => {
+    if (!paymentCoin) return;
     try {
       const res = await fetch(`/api/sideshift/quote?depositCoin=${paymentCoin}&settleCoin=USDC&depositAmount=2`);
       const data = await res.json();
@@ -43,6 +38,12 @@ export default function RegisterPage() {
       console.error('Error fetching quote:', error);
     }
   };
+
+  useEffect(() => {
+    if (address) {
+      checkRegistration();
+    }
+  }, [address]);
 
   useEffect(() => {
     if (paymentCoin) {
