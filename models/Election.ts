@@ -48,6 +48,7 @@ const ElectionSchema: Schema = new Schema(
       type: Number,
       required: true,
       unique: true,
+      index: true,
     },
     creatorAddress: {
       type: String,
@@ -74,15 +75,18 @@ const ElectionSchema: Schema = new Schema(
     startTime: {
       type: Date,
       required: true,
+      index: true,
     },
     endTime: {
       type: Date,
       required: true,
+      index: true,
     },
     status: {
       type: String,
       enum: ['Pending', 'Active', 'Ended', 'Cancelled'],
       default: 'Pending',
+      index: true,
     },
     totalVotes: {
       type: Number,
@@ -114,10 +118,6 @@ const ElectionSchema: Schema = new Schema(
     timestamps: true,
   }
 );
-
-ElectionSchema.index({ electionId: 1 });
-ElectionSchema.index({ status: 1 });
-ElectionSchema.index({ endTime: 1 });
 
 export default mongoose.models.Election || mongoose.model<IElection>('Election', ElectionSchema);
 
