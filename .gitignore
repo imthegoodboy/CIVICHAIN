@@ -39,3 +39,14 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# hardhat
+cache/
+artifacts/
+coverage/
+coverage.json
+typechain-types/
+
+# local env files
+.env.local
+.env*.local
