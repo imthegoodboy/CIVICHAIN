@@ -4,12 +4,13 @@ import Election from '@/models/Election';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
     await connectDB();
     
-    const election = await Election.findOne({ electionId: parseInt(params.id) });
+    const { id } = await context.params;
+    const election = await Election.findOne({ electionId: parseInt(id) });
     
     if (!election) {
       return NextResponse.json(
@@ -29,14 +30,15 @@ export async function GET(
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
     await connectDB();
     
     const data = await request.json();
+    const { id } = await context.params;
     const election = await Election.findOneAndUpdate(
-      { electionId: parseInt(params.id) },
+      { electionId: parseInt(id) },
       { $set: data },
       { new: true }
     );
