@@ -31,6 +31,9 @@ export default function Navbar() {
             <Link href="/create" className="text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white font-medium">
               Create Election
             </Link>
+            <Link href="/about" className="text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white font-medium">
+              About
+            </Link>
 
             <Button variant="ghost" size="sm" onClick={toggleTheme} className="p-2">
               {resolvedTheme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
