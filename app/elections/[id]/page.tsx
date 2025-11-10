@@ -7,7 +7,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { useAccount } from 'wagmi';
 import Navbar from '@/components/Navbar';
 import { Button } from '@/components/ui/button';
-import { Clock, Users, Vote, CheckCircle, BarChart3, Sparkles } from 'lucide-react';
+import { Clock, Users, Vote, CheckCircle, BarChart3, Sparkles, Share2, Copy } from 'lucide-react';
 import axios from 'axios';
 
 interface Election {
@@ -112,6 +112,19 @@ export default function ElectionDetailPage() {
     }
   };
 
+  const shareElection = async () => {
+    const url = typeof window !== 'undefined' ? window.location.href : '';
+    if (!url) return;
+    if (navigator.share) {
+      try {
+        await navigator.share({ title: election?.title || 'Election', url });
+      } catch {}
+    } else {
+      await navigator.clipboard.writeText(url);
+      alert('Link copied to clipboard');
+    }
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50">
@@ -157,14 +170,24 @@ export default function ElectionDetailPage() {
                 {election.status}
               </span>
             </div>
-            <Button
-              onClick={fetchAnalysis}
-              variant="outline"
-              className="flex items-center gap-2"
-            >
-              <Sparkles className="w-4 h-4" />
-              AI Analysis
-            </Button>
+            <div className="flex gap-2">
+              <Button
+                onClick={fetchAnalysis}
+                variant="outline"
+                className="flex items-center gap-2"
+              >
+                <Sparkles className="w-4 h-4" />
+                AI Analysis
+              </Button>
+              <Button
+                onClick={shareElection}
+                variant="outline"
+                className="flex items-center gap-2"
+              >
+                <Share2 className="w-4 h-4" />
+                Share
+              </Button>
+            </div>
           </div>
           
           <p className="text-gray-600 mb-6">{election.description}</p>
